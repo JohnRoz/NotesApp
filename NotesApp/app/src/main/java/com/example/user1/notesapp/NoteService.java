@@ -9,8 +9,15 @@ public interface NoteService {
     void editNote(String id, String newText, String newTitle);
     void createNewNote(String text, String title);
     void deleteNote(String id);
-    String getNoteText(String id);
+    void getNoteText(String id);
     String GetNoteTitle(String id);
     Date getDateModified(String id);
     String[] getIdList();
+
+
+
+    interface Callback {
+        void doSomething(String s);
+    }
+
 }

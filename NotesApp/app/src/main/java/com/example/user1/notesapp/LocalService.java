@@ -1,6 +1,7 @@
 package com.example.user1.notesapp;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Random;
+import java.util.concurrent.Callable;
 
 /**
  * Created by USER1 on 15/09/2016.
@@ -26,88 +28,133 @@ public class LocalService implements NoteService {
 
 
     @Override
-    public void editNote(String id, String newText, String newTitle) {
-        try{
+    public void editNote(final String id, final String newText, final String newTitle) {
+        new AsyncTask<Void, Void, Void>() {
 
-            //The name of the file:
-            String fileName = id + ".txt";
+            @Override
+            protected Void doInBackground(Void... params) {
+                try{
 
-            //create a new file with the id given. (if there is already a file using this id, it pulls it from the memory and uses it).
-            FileOutputStream fos=context.openFileOutput(fileName, Context.MODE_PRIVATE);
+                    //The name of the file:
+                    String fileName = id + ".txt";
 
-            //wrap the FileInputStream file with a PrintWriter to work in a more high level way.
-            PrintWriter printWriter =new PrintWriter(fos);
+                    //create a new file with the id given. (if there is already a file using this id, it pulls it from the memory and uses it).
+                    FileOutputStream fos=context.openFileOutput(fileName, Context.MODE_PRIVATE);
 
-            //inserts the given newTitle to the file.
-            printWriter.println(newTitle);
+                    //wrap the FileInputStream file with a PrintWriter to work in a more high level way.
+                    PrintWriter printWriter =new PrintWriter(fos);
 
-            //inserts the given newText to the file.
-            printWriter.print(newText);
+                    //inserts the given newTitle to the file.
+                    printWriter.println(newTitle);
 
-            printWriter.close();
+                    //inserts the given newText to the file.
+                    printWriter.print(newText);
 
-        } catch(FileNotFoundException ex){ex.printStackTrace();}
+                    printWriter.close();
 
+                } catch(FileNotFoundException ex){ex.printStackTrace();}
 
-    }
-
-    @Override
-    public void createNewNote(String text, String title) {
-
-        //create a new id for the new file.
-        String fileName = generateRandomId() + ".txt";
-
-        try{
-            //create a new file with the id generated.
-            FileOutputStream fos=context.openFileOutput(fileName, Context.MODE_PRIVATE);
-
-            //wrap the FileOutputStream file with a PrintWriter to work in a more high level way.
-            PrintWriter printWriter =new PrintWriter(fos);
-
-            //inserts the given title to the file.
-            printWriter.println(title);
-
-            //inserts the given text to the file.
-            printWriter.print(text);
-
-            printWriter.close();
-
-        } catch(FileNotFoundException ex){ex.printStackTrace();}
-
-    }
-
-    @Override
-    public void deleteNote(String id) {
-        String fileName = id + ".txt";
-        context.deleteFile(fileName);
-    }
-
-    @Override
-    public String getNoteText(String id) {
-        String fileName = id + ".txt";
-        String text="";
-        try {
-            //gets the file with the specified id from the memory. if it doesn't exist, it throws a FileNotFoundException.
-          FileInputStream fis = context.openFileInput(fileName);
-
-            //wrap the FileInputStream file with a BufferedReader to work in a more high level way.
-          BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fis));
-
-            bufferedReader.readLine(); // jump one line down to skip the title
-
-            //gives the line of the text in the file a shorter name and checks if it is not null in every run of the loop.
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                //insert all the text in the file inside a String
-                text = line;
+                return null;
             }
-      } catch(IOException ex){
-            ex.printStackTrace();
-            text = "ERROR: FILE NOT FOUND";
-        }
+        }.execute();
 
-        //return the String that contains the text content of the file
-        return text;
+
+    }
+
+    @Override
+    public void createNewNote(final String text, final String title) {
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                //create a new id for the new file.
+                String fileName = generateRandomId() + ".txt";
+
+
+                try{
+                    //create a new file with the id generated.
+                    FileOutputStream fos=context.openFileOutput(fileName, Context.MODE_PRIVATE);
+
+                    //wrap the FileOutputStream file with a PrintWriter to work in a more high level way.
+                    PrintWriter printWriter =new PrintWriter(fos);
+
+                    //inserts the given title to the file.
+                    printWriter.println(title);
+
+                    //inserts the given text to the file.
+                    printWriter.print(text);
+
+                    printWriter.close();
+
+                } catch(FileNotFoundException ex){ex.printStackTrace();}
+
+                return null;
+            }
+        }.execute();
+
+
+    }
+
+    @Override
+    public void deleteNote(final String id) {
+        new AsyncTask<Void/*(params)*/, Void/*(progress)*/, Void/*(result)*/>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+
+                String fileName = id + ".txt";
+                context.deleteFile(fileName);
+
+                return null;
+            }
+        }.execute();
+
+    }
+
+
+    /* getNoteText(24, new Callback() {
+                    @Override
+                    public void doSomething(String s) {
+                        listAdapter.add(s);
+                    }
+                });*/
+
+    @Override
+    public void getNoteText(final String id, final Callback c) {
+        new AsyncTask<Void/*(params)*/, Void/*(progress)*/, String/*(result)*/>() {
+            @Override
+            protected String doInBackground(Void... params) {
+
+                String fileName = id + ".txt";
+                String text="";
+                try {
+                    //gets the file with the specified id from the memory. if it doesn't exist, it throws a FileNotFoundException.
+                    FileInputStream fis = context.openFileInput(fileName);
+
+                    //wrap the FileInputStream file with a BufferedReader to work in a more high level way.
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fis));
+
+                    bufferedReader.readLine(); // jump one line down to skip the title
+
+                    //gives the line of the text in the file a shorter name and checks if it is not null in every run of the loop.
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        //insert all the text in the file inside a String
+                        text = line;
+                    }
+                } catch(IOException ex){
+                    ex.printStackTrace();
+                    text = "ERROR: FILE NOT FOUND";
+                }
+
+                //return the String that contains the text content of the file
+                return text;
+            }
+
+            @Override
+            protected void onPostExecute(String result){
+                c.doSomething(result);
+            }
+        }.execute();
 
     }
 

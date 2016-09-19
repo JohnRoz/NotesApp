@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by USER1 on 15/09/2016.
  */
-public class Note implements Comparable{
+public class Note implements Comparable {
     private String id;
     private String title;
     private Date dateLastModified;
@@ -15,7 +15,7 @@ public class Note implements Comparable{
         this.id = id;
         this.title = "New Note";
         this.dateLastModified = new Date();
-        this.text="";
+        this.text = "";
     }
 
     public Note(String id, String title, Date dateLastModified, String text) {
@@ -59,6 +59,11 @@ public class Note implements Comparable{
 
     @Override
     public int compareTo(Object o) {
-        return getDateLastModified().compareTo(((Note)o).getDateLastModified());
+        return getDateLastModified().compareTo(((Note) o).getDateLastModified());
+    }
+
+    @Override
+    public String toString() {
+        return text;
     }
 }
