@@ -28,15 +28,16 @@ public class LocalService implements NoteService {
 
 
     @Override
-    public void editNote(final String id, final String newText, final String newTitle) {
+    public void updateNote(final Note note) {
         new AsyncTask<Void, Void, Void>() {
 
             @Override
             protected Void doInBackground(Void... params) {
                 try{
 
+
                     //The name of the file:
-                    String fileName = id + ".txt";
+                    String fileName = note.getId() + ".txt";
 
                     //create a new file with the id given. (if there is already a file using this id, it pulls it from the memory and uses it).
                     FileOutputStream fos=context.openFileOutput(fileName, Context.MODE_PRIVATE);
@@ -45,10 +46,10 @@ public class LocalService implements NoteService {
                     PrintWriter printWriter =new PrintWriter(fos);
 
                     //inserts the given newTitle to the file.
-                    printWriter.println(newTitle);
+                    printWriter.println(note.getTitle());
 
                     //inserts the given newText to the file.
-                    printWriter.print(newText);
+                    printWriter.print(note.getText());
 
                     printWriter.close();
 
@@ -62,7 +63,7 @@ public class LocalService implements NoteService {
     }
 
     @Override
-    public void createNewNote(final String text, final String title) {
+    public void createNewNote(final Note note) {
 
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -79,10 +80,10 @@ public class LocalService implements NoteService {
                     PrintWriter printWriter =new PrintWriter(fos);
 
                     //inserts the given title to the file.
-                    printWriter.println(title);
+                    printWriter.println(note.getTitle());
 
                     //inserts the given text to the file.
-                    printWriter.print(text);
+                    printWriter.print(note.getText());
 
                     printWriter.close();
 
