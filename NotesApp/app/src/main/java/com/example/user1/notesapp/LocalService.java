@@ -69,7 +69,8 @@ public class LocalService implements NoteService {
             @Override
             protected Void doInBackground(Void... params) {
                 //create a new id for the new file.
-                String fileName = generateRandomId() + ".txt";
+                note.setId(generateRandomId());
+                String fileName = note.getId() + ".txt";
 
 
                 try{
@@ -97,12 +98,12 @@ public class LocalService implements NoteService {
     }
 
     @Override
-    public void deleteNote(final String id) {
+    public void deleteNote(final Note note) {
         new AsyncTask<Void/*(params)*/, Void/*(progress)*/, Void/*(result)*/>() {
             @Override
             protected Void doInBackground(Void... params) {
 
-                String fileName = id + ".txt";
+                String fileName = note.getId() + ".txt";
                 context.deleteFile(fileName);
 
                 return null;
@@ -119,13 +120,14 @@ public class LocalService implements NoteService {
                     }
                 });*/
 
+
     @Override
-    public void getNoteText(final String id, final Callback c) {
-        new AsyncTask<Void/*(params)*/, Void/*(progress)*/, String/*(result)*/>() {
+    public void getNoteText(final Note note, final Callback c) {
+        new AsyncTask<Void /*(params)*/, Void /*(progress)*/, String/*(result)*/>() {
             @Override
             protected String doInBackground(Void... params) {
 
-                String fileName = id + ".txt";
+                String fileName = note.getId() + ".txt";
                 String text="";
                 try {
                     //gets the file with the specified id from the memory. if it doesn't exist, it throws a FileNotFoundException.
@@ -160,8 +162,8 @@ public class LocalService implements NoteService {
     }
 
     @Override
-    public String GetNoteTitle(String id) {
-        String fileName=id + ".txt";
+    public String GetNoteTitle(Note note) {
+        String fileName=note.getId() + ".txt";
         String title="";
         try{
             //gets the file with the specified id from the memory. if it doesn't exist, it throws a FileNotFoundException.
@@ -179,8 +181,8 @@ public class LocalService implements NoteService {
     }
 
     @Override
-    public Date getDateModified(String id) {
-        String fileName = id + ".txt";
+    public Date getDateModified(Note note) {
+        String fileName = note.getId() + ".txt";
 
         //creates an array of all the files.
         File[] files = context.getFilesDir().listFiles();
@@ -190,6 +192,7 @@ public class LocalService implements NoteService {
         * if it is, return the "lastModified" date of that file
         * if the loop ends and no file matched the given id, the function *!* -returns null- *!*
         */
+
         for (File file : files)
             if (file.getName().equals(fileName))
                 return new Date(file.lastModified());
@@ -212,6 +215,7 @@ public class LocalService implements NoteService {
         return ids;
 
     }
+
 
     //this function is designed to create the IDs of all the files by randomizing chars into 20 chars long Strings.
     public String generateRandomId(){
