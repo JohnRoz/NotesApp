@@ -2,6 +2,7 @@ package com.example.user1.notesapp;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -89,7 +90,6 @@ public class LocalService implements NoteService {
                     printWriter.close();
 
                 } catch(FileNotFoundException ex){ex.printStackTrace();}
-
                 return null;
             }
         }.execute();

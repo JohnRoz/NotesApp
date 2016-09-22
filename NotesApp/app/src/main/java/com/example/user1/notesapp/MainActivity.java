@@ -18,24 +18,26 @@ public class MainActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     FloatingActionButton fab;
-    GridView gridView;
-    ArrayAdapter<Note> arrayAdapter;
-    LocalService localService;
-    ArrayList<Note> notes;
+    static GridView gridView;
+    static LocalService localService;
+    static ArrayList<Note> notes=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        localService = new LocalService(this);
+
+        //notes = new ArrayList<>();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        gridView=(GridView) findViewById(R.id.gridView);
 
-        gridView=(GridView) findViewById(R.id.gridview);
-        ArrayList<Note> notes = new ArrayList<>();
-        arrayAdapter=new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notes);
-
+        gridView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notes));
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        gridView.setAdapter(arrayAdapter);
+
 
 
 
@@ -140,5 +142,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        gridView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notes));
     }
 }
