@@ -18,9 +18,11 @@ public class MainActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     FloatingActionButton fab;
-    static GridView gridView;
-    static LocalService localService;
-    static ArrayList<Note> notes=new ArrayList<>();
+
+    GridView gridView;
+    LocalService localService;
+    ArrayList<Note> notes;
+    ArrayAdapter<Note> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,24 +32,26 @@ public class MainActivity extends AppCompatActivity {
 
         localService = new LocalService(this);
 
-        //notes = new ArrayList<>();
+        notes = new ArrayList<>();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         gridView=(GridView) findViewById(R.id.gridView);
+        //android.R.layout.simple_list_item_1
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notes);
 
-        gridView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notes));
+        gridView.setAdapter(adapter);
+
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();*/
 
                 Note newNote = new Note("","");
-                notes.add(newNote);
+                adapter.add(newNote);
                 Intent intent = new Intent(MainActivity.this, NoteSet.class);
                 intent.putExtra("note", newNote);
                 startActivity(intent);
@@ -67,12 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-
-//android.R.layout.simple_list_item_1
 
 
 
@@ -152,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        gridView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notes));
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notes);
+        gridView.setAdapter(adapter);
     }
 }

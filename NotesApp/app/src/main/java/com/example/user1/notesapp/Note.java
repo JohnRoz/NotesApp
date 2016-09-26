@@ -1,5 +1,6 @@
 package com.example.user1.notesapp;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -51,6 +52,6 @@ public class Note implements Serializable /*implements Comparable*/ {
 
     @Override
     public String toString() {
-        return text;
+        return title;
     }
 }

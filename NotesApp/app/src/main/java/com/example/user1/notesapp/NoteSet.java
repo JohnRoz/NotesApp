@@ -23,10 +23,6 @@ public class NoteSet extends AppCompatActivity {
     EditText noteTitle;
     EditText noteText;
     LocalService localService;
-
-    ArrayAdapter arrayAdapter;
-    GridView gridView;
-    ArrayList<Note> notes;
     Note note;
 
     @Override
@@ -39,21 +35,23 @@ public class NoteSet extends AppCompatActivity {
 
         note = (Note)getIntent().getSerializableExtra("note");
 
-        //The text of the note
+        //The EditText of the the title of the note
         noteTitle = (EditText) findViewById(R.id.noteTitle);
+
+        //If the note has a title in it (it's not a new note), set 'noteTitle' to contain that text.
         noteTitle.setText(note.getTitle());
-        //The title of the note
+
+        //The EditText of the text of the note
         noteText = (EditText) findViewById(R.id.noteText);
 
-
-        //The static ArrayList 'notes' from the MainActivity
-        notes = MainActivity.notes;
+        //If the note has text in it (it's not a new note), set 'noteText' to contain that text
+        noteText.setText(note.getText());
 
 
 
 
         //Creating a new LocalService so I can build the .txt file in the internal memory
-        localService = MainActivity.localService;
+        localService = new LocalService(this); //MainActivity.localService;
 
         FloatingActionButton saveFab = (FloatingActionButton) findViewById(R.id.saveFab);
         saveFab.setOnClickListener(new View.OnClickListener() {
@@ -63,9 +61,6 @@ public class NoteSet extends AppCompatActivity {
                 //The new Note that was just created
                 //(that will be sent to the LocalService in order to create the .txt file in the internal memory)
                 Note newNote = new Note(noteTitle.getText().toString(), noteText.getText().toString());
-
-                //Add the new Note to the ArrayList
-                notes.add(newNote);
 
                 localService.createNewNote(newNote);
                 finish();
