@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by USER1 on 15/09/2016.
  */
-public class Note /*implements Comparable*/ {
+public class Note implements Serializable /*implements Comparable*/ {
     private String id;
     private String title;
     //private Date dateLastModified;

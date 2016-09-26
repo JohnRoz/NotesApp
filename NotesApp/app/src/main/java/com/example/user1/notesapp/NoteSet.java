@@ -27,6 +27,7 @@ public class NoteSet extends AppCompatActivity {
     ArrayAdapter arrayAdapter;
     GridView gridView;
     ArrayList<Note> notes;
+    Note note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +36,19 @@ public class NoteSet extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+        note = (Note)getIntent().getSerializableExtra("note");
+
         //The text of the note
         noteTitle = (EditText) findViewById(R.id.noteTitle);
+        noteTitle.setText(note.getTitle());
         //The title of the note
         noteText = (EditText) findViewById(R.id.noteText);
+
 
         //The static ArrayList 'notes' from the MainActivity
         notes = MainActivity.notes;
 
-        gridView = MainActivity.gridView;
 
 
 

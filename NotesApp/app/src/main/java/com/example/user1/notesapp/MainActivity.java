@@ -45,7 +45,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
-                startActivity( new Intent(MainActivity.this,NoteSet.class));
+
+                Note newNote = new Note("","");
+                notes.add(newNote);
+                Intent intent = new Intent(MainActivity.this, NoteSet.class);
+                intent.putExtra("note", newNote);
+                startActivity(intent);
 
             }
         });
