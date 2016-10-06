@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         gridView.setAdapter(adapter);
 
 
+        //when pressing on the 'Add Note' button
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //when pressing on a note from the ListView
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -74,14 +76,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
     }
-
-
 
 
     @Override
@@ -105,4 +100,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
