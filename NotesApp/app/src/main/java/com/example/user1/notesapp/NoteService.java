@@ -9,9 +9,7 @@ public interface NoteService {
     void updateNote(Note note);
     void createNewNote(Note note);
     void deleteNote(Note note);
-    void getNoteText(Note note, Callback c);
-    String GetNoteTitle(Note note);
-    Date getDateModified(Note note);
+    //Date getDateModified(Note note);
     String[] getIdList();
 
 

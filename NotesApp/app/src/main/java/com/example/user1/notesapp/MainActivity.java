@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -50,7 +51,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();*/
 
+
                 Note newNote = new Note("","");
+                localService.createNewNote(newNote);
+
                 adapter.add(newNote);
                 Intent intent = new Intent(MainActivity.this, NoteSet.class);
                 intent.putExtra("note", newNote);
@@ -59,21 +63,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        /*localService.getNoteText(24, new NoteService.Callback() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void doSomething(String s) {
-                listAdapter.add(s);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Note note = adapter.getItem(position);
+
+                Intent intent = new Intent(MainActivity.this, NoteSet.class);
+                intent.putExtra("note", note);
+                startActivity(intent);
             }
-        });*/
-
-
-
-
-
-
-
-
+        });
 
 
 
@@ -83,46 +82,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /*class GridViewAdapter extends BaseAdapter {
-        ArrayList<Note> notes;
-
-
-        public GridViewAdapter(ArrayList<Note> notes) {
-            this.notes = notes;
-        }
-
-        @Override
-        public int getCount() {
-            if (notes!=null)
-                return notes.size();
-            return 0;
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return notes.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            view = getLayoutInflater().inflate(R.layout.gridview_item, viewGroup, false);
-            TextView noteText = (TextView) view.findViewById(R.id.noteText);
-            TextView noteTitle = (TextView) view.findViewById(R.id.noteTitle);
-            Note tempNote = notes.get(i);
-
-            noteText.setText(tempNote.getText());
-            noteTitle.setText(tempNote.getTitle());
-
-            return view;
-
-        }
-
-    }*/
 
 
     @Override
@@ -145,12 +104,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notes);
-        gridView.setAdapter(adapter);
     }
 }

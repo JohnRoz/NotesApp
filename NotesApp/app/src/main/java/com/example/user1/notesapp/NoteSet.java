@@ -35,7 +35,7 @@ public class NoteSet extends AppCompatActivity {
 
         note = (Note)getIntent().getSerializableExtra("note");
 
-        //The EditText of the the title of the note
+        //The EditText of the title of the note
         noteTitle = (EditText) findViewById(R.id.noteTitle);
 
         //If the note has a title in it (it's not a new note), set 'noteTitle' to contain that text.
@@ -58,11 +58,11 @@ public class NoteSet extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                //The new Note that was just created
-                //(that will be sent to the LocalService in order to create the .txt file in the internal memory)
-                Note newNote = new Note(noteTitle.getText().toString(), noteText.getText().toString());
+                //if the note is new note, it will save it with the new text & title
+                //if the note is an existing note, it will save it with the new text & title
+                Note note = new Note(noteTitle.getText().toString(), noteText.getText().toString());
 
-                localService.createNewNote(newNote);
+                localService.updateNote(note);
                 finish();
 
 

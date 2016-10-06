@@ -113,74 +113,10 @@ public class LocalService implements NoteService {
     }
 
 
-    /* getNoteText(24, new Callback() {
-                    @Override
-                    public void doSomething(String s) {
-                        listAdapter.add(s);
-                    }
-                });*/
 
 
-    @Override
-    public void getNoteText(final Note note, final Callback c) {
-        new AsyncTask<Void /*(params)*/, Void /*(progress)*/, String/*(result)*/>() {
-            @Override
-            protected String doInBackground(Void... params) {
 
-                String fileName = note.getId() + ".txt";
-                String text="";
-                try {
-                    //gets the file with the specified id from the memory. if it doesn't exist, it throws a FileNotFoundException.
-                    FileInputStream fis = context.openFileInput(fileName);
-
-                    //wrap the FileInputStream file with a BufferedReader to work in a more high level way.
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fis));
-
-                    bufferedReader.readLine(); // jump one line down to skip the title
-
-                    //gives the line of the text in the file a shorter name and checks if it is not null in every run of the loop.
-                    String line;
-                    while ((line = bufferedReader.readLine()) != null) {
-                        //insert all the text in the file inside a String
-                        text = line;
-                    }
-                } catch(IOException ex){
-                    ex.printStackTrace();
-                    text = "ERROR: FILE NOT FOUND";
-                }
-
-                //return the String that contains the text content of the file
-                return text;
-            }
-
-            @Override
-            protected void onPostExecute(String result){
-                c.doSomething(result);
-            }
-        }.execute();
-
-    }
-
-    @Override
-    public String GetNoteTitle(Note note) {
-        String fileName=note.getId() + ".txt";
-        String title="";
-        try{
-            //gets the file with the specified id from the memory. if it doesn't exist, it throws a FileNotFoundException.
-            FileInputStream fis = context.openFileInput(fileName);
-
-            //wrap the FileInputStream file with a BufferedReader to work in a more high level way.
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fis));
-
-            title=bufferedReader.readLine();
-
-        }
-        catch(IOException ex){ex.printStackTrace();}
-
-        return title;
-    }
-
-    @Override
+    /*@Override
     public Date getDateModified(Note note) {
         String fileName = note.getId() + ".txt";
 
@@ -191,13 +127,13 @@ public class LocalService implements NoteService {
         *is the 'name' of the file is the same as the given id?
         * if it is, return the "lastModified" date of that file
         * if the loop ends and no file matched the given id, the function *!* -returns null- *!*
-        */
+        //
 
         for (File file : files)
             if (file.getName().equals(fileName))
                 return new Date(file.lastModified());
         return null;
-    }
+    }*/
 
     @Override
     public String[] getIdList() {
