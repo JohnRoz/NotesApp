@@ -58,9 +58,8 @@ public class NoteSet extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                //if the note is new note, it will save it with the new text & title
-                //if the note is an existing note, it will save it with the new text & title
-                Note note = new Note(noteTitle.getText().toString(), noteText.getText().toString());
+                note.setTitle(noteTitle.getText().toString());
+                note.setText(noteText.getText().toString());
 
                 localService.updateNote(note);
                 finish();

@@ -35,6 +35,18 @@ public class MainActivity extends AppCompatActivity {
 
         notes = new ArrayList<>();
 
+
+        //*******************************************************
+        Note exNote1 = new Note("Title", "TEXT");
+        localService.createNewNote(exNote1);
+        Note exNote2 = new Note("ABC", "XYZ");
+        localService.createNewNote(exNote2);
+
+        notes.add(exNote1);
+        notes.add(exNote2);
+        //*******************************************************
+
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -60,11 +72,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, NoteSet.class);
                 intent.putExtra("note", newNote);
                 startActivity(intent);
-
             }
         });
 
-        //when pressing on a note from the ListView
+        //when pressing on a note from the GridView
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -100,5 +111,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
 }
