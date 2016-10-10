@@ -12,6 +12,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.Callable;
@@ -30,6 +32,7 @@ public class LocalService implements NoteService {
 
     @Override
     public void updateNote(final Note note) {
+        //AsyncTask parameters: Params, Progress, Result
         new AsyncTask<Void, Void, Void>() {
 
             @Override
@@ -98,6 +101,87 @@ public class LocalService implements NoteService {
     }
 
     @Override
+    public void readNoteByNote(final Note note) {
+        new AsyncTask<Void,Void,Note>(){
+
+            @Override
+            protected Note doInBackground(Void... params) {
+                String fileName = note.getId() + ".txt";
+                String title="", text="";
+                try{
+                    FileInputStream fis = context.openFileInput(fileName);
+                    InputStreamReader in = new InputStreamReader(fis);
+                    BufferedReader reader = new BufferedReader(in);
+
+                    title = reader.readLine();
+                    text="";
+
+                    String line = reader.readLine();
+                    while (line != null){
+                        text += line;
+                        line = reader.readLine();
+                    }
+                    reader.close();
+                    fis.close();
+
+
+
+
+                } catch(IOException ex){ex.printStackTrace();}
+
+                Note note = new Note(title,text);
+
+                return note;
+            }
+        }.execute();
+    }
+
+    @Override
+    public Note readNoteById(final String id) {
+
+                String fileName = id + ".txt";
+                String title="", text="";
+                try{
+                    FileInputStream fis = context.openFileInput(fileName);
+                    InputStreamReader in = new InputStreamReader(fis);
+                    BufferedReader reader = new BufferedReader(in);
+
+                    title = reader.readLine();
+                    text="";
+
+                    String line = reader.readLine();
+                    while (line != null){
+                        text += line;
+                        line = reader.readLine();
+                    }
+                    reader.close();
+                    fis.close();
+
+
+
+
+                } catch(IOException ex){ex.printStackTrace();}
+
+                Note note = new Note(title,text);
+
+                return note;
+
+
+    }
+
+    @Override
+    public ArrayList<Note> getAllNotes() {
+        String[] IDs = getIdList();
+        ArrayList<Note> notes = new ArrayList<>();
+        for(int i=0; i< IDs.length; i++){
+            Note temp = readNoteById(IDs[i]);
+            notes.add(temp);
+        }
+        return notes;
+
+    }
+
+    @Override
     public void deleteNote(final Note note) {
         new AsyncTask<Void/*(params)*/, Void/*(progress)*/, Void/*(result)*/>() {
             @Override
@@ -111,6 +195,8 @@ public class LocalService implements NoteService {
         }.execute();
 
     }
+
+
 
 
 

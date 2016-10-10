@@ -36,10 +36,15 @@ public class MainActivity extends AppCompatActivity {
 
         localService = new LocalService(this);
 
-        notes = new ArrayList<>();
+        //notes = new ArrayList<>();
+        notes = localService.getAllNotes();//<= new code
+
+        //******* -IMPORTANT- *******
+        //When editing a Note, I discovered it saves the new note created but doesn't get rid of the old, edited one
+        //******* -IMPORTANT- *******
 
 
-        //*******************************************************
+        /*******************************************************
         Note exNote1 = new Note("Title", "TEXT");
         localService.createNewNote(exNote1);
         Note exNote2 = new Note("ABC", "XYZ");
@@ -47,14 +52,14 @@ public class MainActivity extends AppCompatActivity {
 
         notes.add(exNote1);
         notes.add(exNote2);
-        //*******************************************************
+        //*******************************************************/
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         gridView=(GridView) findViewById(R.id.gridView);
-        //android.R.layout.simple_list_item_1
+
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notes);
 
         gridView.setAdapter(adapter);

@@ -1,5 +1,6 @@
 package com.example.user1.notesapp;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -8,6 +9,9 @@ import java.util.Date;
 public interface NoteService {
     void updateNote(Note note);
     void createNewNote(Note note);
+    void readNoteByNote(Note note);
+    Note readNoteById (String id);
+    ArrayList<Note> getAllNotes();
     void deleteNote(Note note);
     //Date getDateModified(Note note);
     String[] getIdList();
