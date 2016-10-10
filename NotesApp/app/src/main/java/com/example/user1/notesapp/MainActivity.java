@@ -131,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
 
         Note note = (Note) data.getSerializableExtra("note");
 
-        sentNote=note;
-
         sentNote.setTitle(note.getTitle());
         sentNote.setText(note.getText());
         
