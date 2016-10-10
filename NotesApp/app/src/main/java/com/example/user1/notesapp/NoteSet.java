@@ -1,5 +1,6 @@
 package com.example.user1.notesapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -62,6 +63,10 @@ public class NoteSet extends AppCompatActivity {
                 note.setText(noteText.getText().toString());
 
                 localService.updateNote(note);
+
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("note",note);
+                setResult(Activity.RESULT_OK, resultIntent);
                 finish();
 
 

@@ -17,6 +17,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final static int START_ACTIVITY_FOR_RESULT = 100;
+
+    private Note sentNote;
     Toolbar toolbar;
     FloatingActionButton fab;
 
@@ -71,7 +74,10 @@ public class MainActivity extends AppCompatActivity {
                 adapter.add(newNote);
                 Intent intent = new Intent(MainActivity.this, NoteSet.class);
                 intent.putExtra("note", newNote);
-                startActivity(intent);
+
+                sentNote=newNote;
+
+                startActivityForResult(intent, START_ACTIVITY_FOR_RESULT);
             }
         });
 
@@ -83,7 +89,9 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(MainActivity.this, NoteSet.class);
                 intent.putExtra("note", note);
-                startActivity(intent);
+
+                sentNote=note;
+                startActivityForResult(intent, START_ACTIVITY_FOR_RESULT);
             }
         });
 
@@ -110,6 +118,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Note note = (Note) data.getSerializableExtra("note");
+
+        sentNote=note;
+
+        sentNote.setTitle(note.getTitle());
+        sentNote.setText(note.getText());
+        
+        adapter.notifyDataSetChanged();
     }
 
 
