@@ -100,6 +100,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        //DELETE NOTE FUNCTION:
+        //ON LONG PRESS DELETE NOTE
+        gridView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                    return false;
+            }
+        });
+
     }
 
 
@@ -133,6 +144,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        //WHEN PRESSING THE 'BACK' BUTTON IN NoteSet I RETURN NULL TO onActivityResult AS THE INTENT
+        if(data==null){
+            //adapter.remove(sentNote);
+            localService.deleteNote(sentNote);
+            return;
+        }
 
         Note note = (Note) data.getSerializableExtra("note");
 

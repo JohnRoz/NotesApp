@@ -26,12 +26,26 @@ public class NoteSet extends AppCompatActivity {
     LocalService localService;
     Note note;
 
+    //WHEN PRESSING BACK I NEED TO DELETE THE EMPTY NOTE CREATED
+    //SEE: onActivityResult IN MainActivity
+    @Override
+    public void onBackPressed() {
+        /*note = (Note)getIntent().getSerializableExtra("note");
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("note",note);*/
+        setResult(Activity.RESULT_OK, null);
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_set);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //Creating a new LocalService so I can build the .txt file in the internal memory
+        localService = new LocalService(this);
 
 
         note = (Note)getIntent().getSerializableExtra("note");
@@ -49,10 +63,6 @@ public class NoteSet extends AppCompatActivity {
         noteText.setText(note.getText());
 
 
-
-
-        //Creating a new LocalService so I can build the .txt file in the internal memory
-        localService = new LocalService(this); //MainActivity.localService;
 
         FloatingActionButton saveFab = (FloatingActionButton) findViewById(R.id.saveFab);
         saveFab.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +82,9 @@ public class NoteSet extends AppCompatActivity {
 
             }
         });
+
+
+
     }
 
 }
