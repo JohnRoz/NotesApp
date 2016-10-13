@@ -2,7 +2,6 @@ package com.example.user1.notesapp;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,10 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.Random;
-import java.util.concurrent.Callable;
 
 /**
  * Created by USER1 on 15/09/2016.
@@ -101,7 +97,7 @@ public class LocalService implements NoteService {
     }
 
     @Override
-    public void readNoteByNote(final Note note) {
+    public void readNote(final Note note, final NoteCallback c) {
         new AsyncTask<Void,Void,Note>(){
 
             @Override
@@ -132,6 +128,11 @@ public class LocalService implements NoteService {
                 Note note = new Note(title,text);
 
                 return note;
+            }
+
+            @Override
+            protected void onPostExecute(Note note) {
+                c.returnNote(note);
             }
         }.execute();
     }
@@ -170,14 +171,27 @@ public class LocalService implements NoteService {
     }
 
     @Override
-    public ArrayList<Note> getAllNotes() {
-        String[] IDs = getIdList();
-        ArrayList<Note> notes = new ArrayList<>();
-        for(int i=0; i< IDs.length; i++){
-            Note temp = readNoteById(IDs[i]);
-            notes.add(temp);
-        }
-        return notes;
+    public void getAllNotes(final NoteArrayListCallback c) {
+        new AsyncTask<Void, Void, ArrayList<Note>>(){
+
+            @Override
+            protected ArrayList<Note> doInBackground(Void... params) {
+
+                String[] IDs = getIdList();
+                ArrayList<Note> notes = new ArrayList<>();
+                for(int i=0; i< IDs.length; i++){
+                    Note note = readNoteById(IDs[i]);
+                    notes.add(note);
+                }
+                return notes;
+            }
+
+            @Override
+            protected void onPostExecute(ArrayList<Note> notes) {
+                c.returnArrayList(notes);
+            }
+
+        }.execute();
 
     }
 

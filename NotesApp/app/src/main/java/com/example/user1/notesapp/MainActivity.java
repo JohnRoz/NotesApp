@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.GridView;
 
 import java.util.ArrayList;
@@ -37,7 +36,12 @@ public class MainActivity extends AppCompatActivity {
         localService = new LocalService(this);
 
         //notes = new ArrayList<>();
-        notes = localService.getAllNotes();//<= new code
+        localService.getAllNotes(new NoteService.NoteArrayListCallback() {
+            @Override
+            public void returnArrayList(ArrayList<Note> notesArrayList) {
+                notes=notesArrayList;
+            }
+        });
 
         //******* -IMPORTANT- *******
         //When editing a Note, I discovered it saves the new note created but doesn't get rid of the old, edited one
@@ -103,11 +107,11 @@ public class MainActivity extends AppCompatActivity {
 
         //DELETE NOTE FUNCTION:
         //ON LONG PRESS DELETE NOTE
-        gridView.setOnLongClickListener(new View.OnLongClickListener() {
+        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    return false;
+                return false;
             }
         });
 
@@ -145,18 +149,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //WHEN PRESSING THE 'BACK' BUTTON IN NoteSet I RETURN NULL TO onActivityResult AS THE INTENT
-        if(data==null){
-            //adapter.remove(sentNote);
-            localService.deleteNote(sentNote);
-            return;
-        }
-
         Note note = (Note) data.getSerializableExtra("note");
 
-        sentNote.setTitle(note.getTitle());
-        sentNote.setText(note.getText());
-        
+        if(note.getText() == "" && note.getTitle()=="") {
+            localService.deleteNote(note);
+            adapter.remove(sentNote);
+        }
+
+        else {
+            sentNote.setTitle(note.getTitle());
+            sentNote.setText(note.getText());
+        }
+
         adapter.notifyDataSetChanged();
     }
 

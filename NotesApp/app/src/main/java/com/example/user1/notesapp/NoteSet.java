@@ -26,13 +26,12 @@ public class NoteSet extends AppCompatActivity {
     LocalService localService;
     Note note;
 
-    //WHEN PRESSING BACK I NEED TO DELETE THE EMPTY NOTE CREATED
-    //SEE: onActivityResult IN MainActivity
+    //get the note, check if its empty. if it is - delete
     @Override
     public void onBackPressed() {
-        /*note = (Note)getIntent().getSerializableExtra("note");
+        note = (Note)getIntent().getSerializableExtra("note");
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("note",note);*/
+        resultIntent.putExtra("note",note);
         setResult(Activity.RESULT_OK, null);
         finish();
     }
