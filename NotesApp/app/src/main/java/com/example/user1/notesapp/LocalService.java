@@ -241,14 +241,14 @@ public class LocalService implements NoteService {
         File[] files = context.getFilesDir().listFiles();
 
         //creates an array to describe all the IDs of the files.
-        String[] ids = new String[files.length];
+        String[] IDs = new String[files.length];
 
         //the loop goes over every file and inserts its ID into the ids array.
         for (int i=0; i<files.length;i++)
-            ids[i]=files[i].getName().replace(".txt","");
+            IDs[i]=files[i].getName().replace(".txt","");
 
         //the function returns the list of the IDs of the files.
-        return ids;
+        return IDs;
 
     }
 

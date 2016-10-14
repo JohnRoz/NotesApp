@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -35,17 +36,24 @@ public class MainActivity extends AppCompatActivity {
 
         localService = new LocalService(this);
 
-        //notes = new ArrayList<>();
+        //example note for debugging:
+        //*******************************************************
+        Note exNote1 = new Note("Title", "TEXT");
+        localService.createNewNote(exNote1);
+        //*******************************************************
+
+        //loading the notes from the memory to the ArrayAdapter
+        //***** THIS CODE BLOCK ISN'T RUNNING FOR SOME REASON! *****
         localService.getAllNotes(new NoteService.NoteArrayListCallback() {
             @Override
             public void returnArrayList(ArrayList<Note> notesArrayList) {
-                notes=notesArrayList;
+                if (notesArrayList != null)
+                    notes = notesArrayList;
+                else
+                    notes = new ArrayList<>();
             }
         });
 
-        //******* -IMPORTANT- *******
-        //When editing a Note, I discovered it saves the new note created but doesn't get rid of the old, edited one
-        //******* -IMPORTANT- *******
 
 
         /*******************************************************
@@ -110,7 +118,10 @@ public class MainActivity extends AppCompatActivity {
         gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Note note = adapter.getItem(position);
+                localService.deleteNote(note);
+                adapter.remove(note);
+                Toast.makeText(getApplicationContext(),"Note is being deleted", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -151,7 +162,9 @@ public class MainActivity extends AppCompatActivity {
 
         Note note = (Note) data.getSerializableExtra("note");
 
-        if(note.getText() == "" && note.getTitle()=="") {
+        //If the user pressed the 'back' button in NoteSet && the note is a new note,
+        //it will be deleted from the memory and from the adapter.
+        if(note.getText().equals("") && note.getTitle().equals("")) {
             localService.deleteNote(note);
             adapter.remove(sentNote);
         }

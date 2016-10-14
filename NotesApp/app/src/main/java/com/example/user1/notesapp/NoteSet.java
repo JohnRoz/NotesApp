@@ -26,13 +26,27 @@ public class NoteSet extends AppCompatActivity {
     LocalService localService;
     Note note;
 
-    //get the note, check if its empty. if it is - delete
+    //when the user presses the 'back' button the note is being sent back to 'onActivityResult'.
+    //If the note is a new note it will be deleted from the memory and removed from the adapter
     @Override
     public void onBackPressed() {
+
+        //this note is an exact copy of the note i sent through the intent
+        //IT'S NOT THE SAME NOTE! IT'S A DUPLICATE!
         note = (Note)getIntent().getSerializableExtra("note");
+
+        //Create an intent to send to the 'onActivityResult' func
         Intent resultIntent = new Intent();
+
+        //Put the note inside the Intent as an extra
+        //*** THE NOTE OBJECT IMPLEMENTS 'Serializable' WHICH MEANS
+        //IT DOESN'T SEND THE ORIGINAL NOTE, BUT AN EXACT COPY OF IT! ***
         resultIntent.putExtra("note",note);
-        setResult(Activity.RESULT_OK, null);
+
+        //Setting the 'Result Code' and the 'Intent' to be sent to the 'onActivityResult' func
+        setResult(Activity.RESULT_OK, resultIntent);
+
+        //Finish (exit) the Activity
         finish();
     }
 
@@ -46,7 +60,8 @@ public class NoteSet extends AppCompatActivity {
         //Creating a new LocalService so I can build the .txt file in the internal memory
         localService = new LocalService(this);
 
-
+        //this note is an exact copy of the note i sent through the intent
+        //IT'S NOT THE SAME NOTE! IT'S A DUPLICATE!
         note = (Note)getIntent().getSerializableExtra("note");
 
         //The EditText of the title of the note
@@ -62,20 +77,31 @@ public class NoteSet extends AppCompatActivity {
         noteText.setText(note.getText());
 
 
-
+        //when pressing the 'Save' button
         FloatingActionButton saveFab = (FloatingActionButton) findViewById(R.id.saveFab);
         saveFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                //sets the text ad title of the note as the text of the EditTexts
                 note.setTitle(noteTitle.getText().toString());
                 note.setText(noteText.getText().toString());
 
+                //Resave the note with it's current values
                 localService.updateNote(note);
 
+                //Create an intent to send to the 'onActivityResult' func
                 Intent resultIntent = new Intent();
+
+                //Put the note inside the Intent as an extra
+                //*** THE NOTE OBJECT IMPLEMENTS 'Serializable' WHICH MEANS
+                //IT DOESN'T SEND THE ORIGINAL NOTE, BUT AN EXACT COPY OF IT! ***
                 resultIntent.putExtra("note",note);
+
+                //Setting the 'Result Code' and the 'Intent' to be sent to the 'onActivityResult' func
                 setResult(Activity.RESULT_OK, resultIntent);
+
+                //Finish (exit) the Activity
                 finish();
 
 
