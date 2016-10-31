@@ -2,6 +2,7 @@ package com.example.user1.notesapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.UiThread;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -36,45 +37,27 @@ public class MainActivity extends AppCompatActivity {
 
         localService = new LocalService(this);
 
-        //example note for debugging:
-        //*******************************************************
-        Note exNote1 = new Note("Title", "TEXT");
-        localService.createNewNote(exNote1);
-        //*******************************************************
-
         //loading the notes from the memory to the ArrayAdapter
-        //***** THIS CODE BLOCK ISN'T RUNNING FOR SOME REASON! *****
         localService.getAllNotes(new NoteService.NoteArrayListCallback() {
             @Override
             public void returnArrayList(ArrayList<Note> notesArrayList) {
-                if (notesArrayList != null)
-                    notes = notesArrayList;
-                else
-                    notes = new ArrayList<>();
+
+                notes = notesArrayList;
+                adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, notes);
+                gridView.setAdapter(adapter);
+
+
             }
         });
-
-
-
-        /*******************************************************
-        Note exNote1 = new Note("Title", "TEXT");
-        localService.createNewNote(exNote1);
-        Note exNote2 = new Note("ABC", "XYZ");
-        localService.createNewNote(exNote2);
-
-        notes.add(exNote1);
-        notes.add(exNote2);
-        //*******************************************************/
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         gridView=(GridView) findViewById(R.id.gridView);
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notes);
 
-        gridView.setAdapter(adapter);
 
 
         //when pressing on the 'Add Note' button

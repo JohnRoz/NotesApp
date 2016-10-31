@@ -21,7 +21,9 @@
         <activity
             android:name=".NoteSet"
             android:label="@string/title_activity_note_set"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+
     </application>
 
 </manifest>
