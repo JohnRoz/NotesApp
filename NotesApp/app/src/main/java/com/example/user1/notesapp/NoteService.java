@@ -6,22 +6,21 @@ import java.util.ArrayList;
  * Created by USER1 on 15/09/2016.
  */
 public interface NoteService {
-    void updateNote(Note note);
-    void createNewNote(Note note);
-    void readNote(Note note, NoteCallback c);
-    Note readNoteById (String id);
-    void getAllNotes(NoteArrayListCallback c);
-    void deleteNote(Note note);
-    //Date getDateModified(Note note);
+    void updateNote(final Note note);
+    void createNewNote(final Note note);
+    Note readNote(final Note note);
+    Note readNoteById (final String id);
+    void getAllNotes(final NoteArrayListCallback c);
+    void deleteNote(final Note note);
     String[] getIdList();
 
 
 
     interface NoteCallback {
-        void returnNote(Note note);
+        void returnNote(final Note note);
     }
     interface NoteArrayListCallback {
-        void returnArrayList(ArrayList<Note> notesArrayList);
+        void returnArrayList(final ArrayList<Note> notesArrayList);
     }
 
 }

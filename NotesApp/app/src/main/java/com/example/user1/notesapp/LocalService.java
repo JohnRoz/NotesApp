@@ -97,8 +97,8 @@ public class LocalService implements NoteService {
     }
 
     @Override
-    public void readNote(Note note, NoteCallback c) {
-
+    public Note readNote(Note note) {
+        return null;
     }
 
     @Override
@@ -112,7 +112,6 @@ public class LocalService implements NoteService {
                     BufferedReader reader = new BufferedReader(in);
 
                     title = reader.readLine();
-                    text="";
 
                     String line = reader.readLine();
                     while (line != null){
@@ -122,16 +121,9 @@ public class LocalService implements NoteService {
                     reader.close();
                     fis.close();
 
-
-
-
                 } catch(IOException ex){ex.printStackTrace();}
 
-                Note note = new Note(title,text);
-
-                return note;
-
-
+                return new Note(title, text);
     }
 
     @Override
@@ -143,8 +135,8 @@ public class LocalService implements NoteService {
 
                 String[] IDs = getIdList();
                 ArrayList<Note> notes = new ArrayList<>();
-                for(int i=0; i< IDs.length; i++){
-                    Note note = readNoteById(IDs[i]);
+                for (String ID : IDs) {
+                    Note note = readNoteById(ID);
                     notes.add(note);
                 }
                 return notes;
@@ -193,7 +185,7 @@ public class LocalService implements NoteService {
 
 
     //this function is designed to create the IDs of all the files by randomizing chars into 20 chars long Strings.
-    public String generateRandomId(){
+    private String generateRandomId(){
 
         //creates a new Random object
         Random rnd = new Random();

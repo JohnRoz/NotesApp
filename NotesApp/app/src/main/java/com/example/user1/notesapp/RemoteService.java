@@ -1,7 +1,13 @@
 package com.example.user1.notesapp;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -12,9 +18,13 @@ public class RemoteService implements NoteService {
     String TITLE_KEY = "Title";
     String TEXT_KEY = "Text";
     String ID_KEY = "ID";
+
+    public RemoteService() {
+    }
+
     @Override
-    public void updateNote(Note note) {
-        ParseObject noteParseObject = new ParseObject("Note");
+    public void updateNote(final Note note) {
+        ParseObject noteParseObject = new ParseObject("notes");
         noteParseObject.put(TITLE_KEY, note.getTitle());
         noteParseObject.put(TEXT_KEY, note.getText());
         noteParseObject.put(ID_KEY,note.getId());
@@ -22,20 +32,48 @@ public class RemoteService implements NoteService {
     }
 
     @Override
-    public void createNewNote(Note note) {
+    public void createNewNote(final Note note) {
         note.setId(generateRandomId());
 
-        ParseObject noteParseObject = new ParseObject("Note");
+        ParseObject noteParseObject = new ParseObject("notes");
         noteParseObject.put(TITLE_KEY, note.getTitle());
         noteParseObject.put(TEXT_KEY, note.getText());
         noteParseObject.put(ID_KEY,note.getId());
         noteParseObject.saveInBackground();
 
+        note.setParseObjectID(noteParseObject.getObjectId());
+
+
     }
 
     @Override
-    public void readNote(Note note, NoteCallback c) {
+    public Note readNote(final Note note) {
+        return null;
+    }
 
+    public ArrayList<Note> readAllNotes(final Note note) {
+
+        final ArrayList<Note> notes = new ArrayList<Note>();
+
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("notes");
+        query.findInBackground(new FindCallback<ParseObject>(){
+            public void done(List<ParseObject> remoteNotes, ParseException e) {
+                if (e == null)
+                    for(ParseObject parseObject : remoteNotes) {
+                        Note note = new Note(parseObject.getString(TITLE_KEY), parseObject.getString(TEXT_KEY));
+                        note.setId(parseObject.getString(ID_KEY));
+
+                        notes.add(note);
+                    }
+
+                 else
+                    throw new RuntimeException();
+                    // handle Parse Exception here
+
+            }
+        });
+
+        return notes;
     }
 
     @Override
@@ -49,8 +87,18 @@ public class RemoteService implements NoteService {
     }
 
     @Override
-    public void deleteNote(Note note) {
+    public void deleteNote(final Note note) {
 
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("notes");
+        query.getInBackground(note.getParseObjectID(), new GetCallback<ParseObject>() {
+            public void done(ParseObject object, ParseException e) {
+                if (e == null) {
+                    object.deleteInBackground();
+                } else {
+                    // something went wrong
+                }
+            }
+        });
     }
 
     @Override
@@ -59,7 +107,7 @@ public class RemoteService implements NoteService {
     }
 
     //this function is designed to create the IDs of all the files by randomizing chars into 20 chars long Strings.
-    public String generateRandomId(){
+    private String generateRandomId(){
 
         //creates a new Random object
         Random rnd = new Random();

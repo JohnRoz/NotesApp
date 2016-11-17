@@ -1,13 +1,13 @@
 package com.example.user1.notesapp;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by USER1 on 15/09/2016.
  */
 public class Note implements Serializable {
     private String id;
+    private String parseObjectID;
     private String title;
     private String text;
 
@@ -15,6 +15,7 @@ public class Note implements Serializable {
 
     public Note(String title, String text) {
         this.id = "";
+        this.parseObjectID = "";
         this.title = title;
         this.text = text;
     }
@@ -35,7 +36,6 @@ public class Note implements Serializable {
         this.title = title;
     }
 
-
     public String getText() {
         return text;
     }
@@ -44,10 +44,9 @@ public class Note implements Serializable {
         this.text = text;
     }
 
-    /*@Override
-    public int compareTo(Object o) {
-        return getDateLastModified().compareTo(((Note) o).getDateLastModified());
-    }*/
+    public String getParseObjectID() { return parseObjectID; }
+
+    public void setParseObjectID(String parseObjectID) { this.parseObjectID = parseObjectID; }
 
     @Override
     public String toString() {
