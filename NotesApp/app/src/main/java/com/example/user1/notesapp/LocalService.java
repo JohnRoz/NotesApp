@@ -97,44 +97,8 @@ public class LocalService implements NoteService {
     }
 
     @Override
-    public void readNote(final Note note, final NoteCallback c) {
-        new AsyncTask<Void,Void,Note>(){
+    public void readNote(Note note, NoteCallback c) {
 
-            @Override
-            protected Note doInBackground(Void... params) {
-                String fileName = note.getId() + ".txt";
-                String title="", text="";
-                try{
-                    FileInputStream fis = context.openFileInput(fileName);
-                    InputStreamReader in = new InputStreamReader(fis);
-                    BufferedReader reader = new BufferedReader(in);
-
-                    title = reader.readLine();
-                    text="";
-
-                    String line = reader.readLine();
-                    while (line != null){
-                        text += line;
-                        line = reader.readLine();
-                    }
-                    reader.close();
-                    fis.close();
-
-
-
-
-                } catch(IOException ex){ex.printStackTrace();}
-
-                Note note = new Note(title,text);
-
-                return note;
-            }
-
-            @Override
-            protected void onPostExecute(Note note) {
-                c.returnNote(note);
-            }
-        }.execute();
     }
 
     @Override
@@ -209,31 +173,6 @@ public class LocalService implements NoteService {
         }.execute();
 
     }
-
-
-
-
-
-
-
-    /*@Override
-    public Date getDateModified(Note note) {
-        String fileName = note.getId() + ".txt";
-
-        //creates an array of all the files.
-        File[] files = context.getFilesDir().listFiles();
-
-        /*for each file, check:
-        *is the 'name' of the file is the same as the given id?
-        * if it is, return the "lastModified" date of that file
-        * if the loop ends and no file matched the given id, the function *!* -returns null- *!*
-        //
-
-        for (File file : files)
-            if (file.getName().equals(fileName))
-                return new Date(file.lastModified());
-        return null;
-    }*/
 
     @Override
     public String[] getIdList() {

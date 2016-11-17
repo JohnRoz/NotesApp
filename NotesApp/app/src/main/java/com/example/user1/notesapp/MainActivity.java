@@ -14,6 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.parse.Parse;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                .applicationId("HY2jOsv7GU1IfJiFaRgEybMrNuWr1PqOc1E0lSTg")
+                .clientKey("ibXQelzL7gqHkk2AjDxYtcGCDOl7mXTsTIGyv09m")
+                .server("https://parseapi.back4app.com/").build()
+        );
 
         localService = new LocalService(this);
 
@@ -105,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 localService.deleteNote(note);
                 adapter.remove(note);
                 Toast.makeText(getApplicationContext(),"Note is being deleted", Toast.LENGTH_SHORT).show();
-                return false;
+                return true;
             }
         });
 

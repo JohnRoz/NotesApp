@@ -9,7 +9,6 @@ import java.util.Date;
 public class Note implements Serializable {
     private String id;
     private String title;
-    //private Date dateLastModified;
     private String text;
 
 
